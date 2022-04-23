@@ -15,6 +15,7 @@ def getVideoDimensions(request):
         query_str = request.GET
         if not 'url' in query_str:
             return JsonResponse({'ok': False, 'message': 'Enter a valid parameter.'})
+
         url = query_str['url']
         if not valid_url(url):
             return JsonResponse({'ok': False, 'message': 'Enter a valid URL.'})
