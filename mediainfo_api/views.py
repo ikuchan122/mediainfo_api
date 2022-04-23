@@ -10,7 +10,6 @@ from requests.exceptions import Timeout
 from io import BytesIO
 
 from mediainfo_api.validator import valid_url
-from mediainfo_server.settings import SECRET_KEY
 
 
 @require_http_methods(["GET", "POST"])
@@ -19,8 +18,6 @@ def getVideoDimensions(request):
     if request.method == 'GET':
         query_str = request.GET
         if not 'url' in query_str:
-            return JsonResponse({'ok': False, 'message': SECRET_KEY})
-
             return JsonResponse({'ok': False, 'message': 'Enter a valid parameter.'})
         url = query_str['url']
         if not valid_url(url):
