@@ -10,6 +10,7 @@ from requests.exceptions import Timeout
 from io import BytesIO
 
 from mediainfo_api.validator import valid_url
+from mediainfo_server.settings import SECRET_KEY
 
 
 @require_http_methods(["GET", "POST"])
