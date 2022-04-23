@@ -1,6 +1,7 @@
-.venv/
-.vscode/
 *.pyc
 staticfiles/
 .env
 db.sqlite3
+.gitignore
+.vscode
+.venv
