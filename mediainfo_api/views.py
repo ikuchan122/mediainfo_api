@@ -4,6 +4,10 @@ from django.views.decorators.http import require_http_methods
 from math import ceil
 from pymediainfo import MediaInfo
 import time
+import requests
+from requests.exceptions import Timeout
+
+from io import BytesIO
 
 from mediainfo_api.validator import valid_url
 
@@ -15,17 +19,20 @@ def getVideoDimensions(request):
         query_str = request.GET
         if not 'url' in query_str:
             return JsonResponse({'ok': False, 'message': 'Enter a valid parameter.'})
-
         url = query_str['url']
         if not valid_url(url):
             return JsonResponse({'ok': False, 'message': 'Enter a valid URL.'})
-        video = url
+        try:
+            video = BytesIO(requests.get(url, timeout=(3, 10)).content)
+        except Timeout:
+            return JsonResponse({'ok': False, 'message': 'Connection timeout when downloading the video.'})
 
     if request.method == 'POST':
         video = request.FILES['file']
 
     print('request received!')
     start = time.time()
+
     tracks = MediaInfo.parse(video).video_tracks
     height, width, duration = 0, 0, 0
     for track in tracks:
